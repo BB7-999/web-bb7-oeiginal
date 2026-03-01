@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>BB7</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+/* MODAL DARK WEB */
+
+.dark-modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.dark-modal-content{
+  background:#111;
+  padding:40px;
+  width:400px;
+  border-radius:12px;
+  text-align:center;
+  border:1px solid #00ff00;
+  color:#00ff00;
+  font-family:"Courier New", monospace;
+  position:relative;
+  box-shadow:0 0 25px #00ff00;
+}
+
+.dark-close{
+  position:absolute;
+  top:15px;
+  right:20px;
+  cursor:pointer;
+  font-size:22px;
+}
+
+/* RESET */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, Helvetica, sans-serif;
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  color:rgb(247, 0, 0);
+  background-image: url("https://cdn.discordapp.com/attachments/1444569246280581172/1477515168803065917/image.png?ex=69a50abb&is=69a3b93b&hm=bbaab5b89a3d00e5ec7e3535c6bee0b56a8e69ec1b3a9ffa78140f3b6e14a9bf&");
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;
+  left:0;
+  top:0;
+  width:250px;
+  height:100%;
+  background:#000;
+  padding:30px 20px;
+  border-right:1px solid rgba(255,255,255,.1);
+}
+
+.sidebar h3{
+  margin-bottom:20px;
+  letter-spacing:3px;
+  border-bottom:1px solid rgba(255,255,255,.2);
+  padding-bottom:10px;
+}
+
+.role-box{ margin-bottom:30px; }
+
+.role-box h4{
+  margin-bottom:15px;
+  letter-spacing:2px;
+}
+
+.member{
+  background:#111;
+  padding:10px;
+  border-radius:6px;
+  margin-bottom:10px;
+  transition:.3s;
+}
+
+.member:hover{
+  background:rgb(0, 0, 0);
+  color:black;
+  transform:translateX(5px);
+}
+
+/* HEADER */
+header{
+  position:fixed;
+  top:0;
+  left:250px;
+  width:calc(100% - 250px);
+  padding:20px 40px;
+  display:flex;
+  justify-content:flex-end;
+  gap:20px;
+  background:#111;
+  z-index:1000;
+}
+
+header a{
+  background:rgb(255, 26, 26);
+  color:black;
+  padding:10px 22px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:bold;
+  transition:.3s;
+}
+
+header a:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 20px #ff0000;
+}
+
+/* HERO */
+.hero{
+  padding-top:180px;
+  margin-left:250px;
+  text-align:center;
+}
+
+.hero h1{
+  display:inline-block;
+  font-size:1.5rem;   /* 👈 más pequeño */
+  margin-bottom:20px;
+  background:rgb(0, 0, 0);
+  color:rgb(255, 0, 0);
+  padding:8px 25px;   /* 👈 menos padding */
+  border-radius:8px;
+  font-weight:bold;
+  letter-spacing:2px;
+  box-shadow:0 0 15px rgba(0, 0, 0, 0.5);
+  transition:0.3s;
+  cursor:pointer;
+}
+
+.hero h1:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 25px rgb(255, 0, 0);
+}
+
+/* STATS */
+.stats{
+  margin-top:60px;
+  display:flex;
+  justify-content:center;
+  gap:100px;
+  flex-wrap:wrap;
+}
+
+.stat{
+  text-align:center;
+}
+
+.stat h2{
+  font-size:2.3rem;
+}
+
+.stat span{
+  font-size:.8rem;
+  opacity:.7;
+  letter-spacing:3px;
+}
+
+.stat.red{
+  color:#ff0000;
+  text-shadow:0 0 15px #ff0000;
+}
+
+/* SECTION */
+.section{
+  margin-top:120px;
+  margin-left:250px;
+  padding:0 8%;
+  text-align:center;
+}
+
+.section h2{
+  margin-bottom:60px;
+  letter-spacing:3px;
+  font-size:1.8rem;
+}
+
+/* GRID */
+.boxes{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:40px;
+}
+
+.box{
+  background:#222;
+  border:1px solid rgba(255,255,255,.2);
+  padding:30px;
+  border-radius:12px;
+  transition:.3s;
+}
+
+.box:hover{
+  transform:translateY(-10px);
+  box-shadow:0 0 20px #050505;
+}
+
+/* BOTONES COMUNIDAD */
+.community-buttons{
+  margin-top:70px;
+  display:flex;
+  gap:30px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.community-buttons button{
+  background:#000000;
+  color:rgb(211, 5, 5);
+  padding:14px 30px;
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:.3s;
+}
+
+.community-buttons button:hover{
+  background:rgb(0, 0, 0);
+  color:rgb(255, 0, 0);
+  box-shadow:0 0 20px #e77676;
+}
+
+/* REGLAS */
+.reglas{
+  margin:120px 0;
+  margin-left:250px;
+  padding:0 15%;
+  text-align:center;
+}
+
+.reglas-box{
+  background:#111;
+  padding:40px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.2);
+  line-height:1.8;
+}
+.reglas h2{
+  display:inline-block;
+  background:rgb(255, 0, 0);
+  color:black;
+  padding:10px 30px;
+  border-radius:8px;
+  font-size:1.4rem;
+  letter-spacing:2px;
+  margin-bottom:40px;
+  font-weight:bold;
+  box-shadow:0 0 15px rgba(0, 0, 0, 0.6);
+  transition:0.3s;
+  cursor:pointer;
+}
+
+.reglas h2:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 25px rgb(250, 0, 0);
+}
+
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.modal-content{
+  background:#111;
+  padding:40px;
+  width:400px;
+  border-radius:12px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.2);
+  position:relative;
+}
+
+.modal-content a{
+  background:rgb(0, 0, 0);
+  color:rgb(3, 3, 3);
+  padding:12px 25px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.close{
+  position:absolute;
+  top:15px;
+  right:20px;
+  cursor:pointer;
+  font-size:22px;
+}
+
+@media(max-width:900px){
+  .boxes{ grid-template-columns:1fr; }
+  .sidebar{ display:none; }
+  header{ left:0; width:100%; }
+  .hero, .section, .reglas{ margin-left:0; }
+}
+
+ /* ===== DARK WEB ADM ===== */
+
+.darkweb{
+    background:#000;
+    padding:80px 8%;
+    text-align:center;
+    color:#00ff00;
+    font-family:"Courier New", monospace;
+    margin-left:250px;
+}
+
+.warning{
+    color:red;
+    font-size:28px;
+    text-shadow:0 0 10px red;
+}
+
+.warning-text{
+    color:#ff4d4d;
+    margin-bottom:40px;
+}
+
+.dark-title{
+    font-size:32px;
+    margin-bottom:50px;
+    text-shadow:0 0 15px #00ff00;
+}
+
+.dark-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:25px;
+    max-width:1200px;
+    margin:auto;
+}
+
+.dark-box{
+    background:#111;
+    border:1px solid #00ff00;
+    padding:15px;
+    transition:0.3s;
+    box-shadow:0 0 10px #00ff00;
+}
+
+.dark-box:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 25px #00ff00;
+}
+
+.dark-box img{
+    width:100%;
+    height:150px;
+    object-fit:cover;
+    border:1px solid #00ff00;
+}
+
+.dark-box h3{
+    margin:10px 0 5px;
+}
+
+.dark-box p{
+    font-weight:bold;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<div class="sidebar">
+  <h3>👑𝓞𝓷𝔀𝓮𝓻 𝓑𝓑7</h3>
+
+  <div class="role-box">
+    <h4>👑 OWNER</h4>
+    <div class="member">𝓗𝓮𝓬𝓽𝓸𝓻𝓹𝓿𝓹𝓿</div>
+    <div class="member"></div>
+  </div>
+
+  <div class="role-box">
+    <h4>⚔️ CO-OWNERS</h4>
+    <div class="member">𝓗𝓮𝓬𝓽𝓸𝓻𝓹𝓿𝓹𝓿</div>
+    <div class="member"></div>
+    <div class="member"></div>
+    <div class="member"></div>
+    <div class="member"></div>
+    <div class="member"></div>
+  </div>
+</div>
+
+<header>
+  <a href="https://discord.gg/yM5gcfdTpf" target="_blak">DISCORD 𝓑𝓑7</a>
+  <a href="#reglas">REGLAS</a>
+    <a href="https://bb7-999.github.io/web-BB7-postuluacion-/" target="_blak">Postuluacion</a>
+</header>
+
+<section class="hero">
+  <h1>𝓑𝓑7</h1>
+  <p>La traicion es la primera en llegar .𝓰𝓰/𝓑𝓑7</p>
+  <p>.𝓰𝓰/𝓑𝓑7</p>
+
+  <div class="stats">
+    <div class="stat">
+      <h2>𝓑𝓑7</h2>
+      <span>𝓑𝓑7 𝓮𝓷 𝓵𝓪 𝓸𝓼𝓬𝓾𝓻𝓲𝓭𝓪𝓭</span>
+    </div>
+
+    <div class="stat red">
+      <h2>𝓑𝓑7</h2>
+      <span>NO CAP</span>
+    </div>
+
+    <div class="stat">
+      <h2></h2>
+      <span></span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>¿Por qué unirte a 𝓑𝓑7?</h2>
+
+  <div class="boxes">
+    <div class="box">Tenemos citizen soundpack etc..</div>
+    <div class="box">Comunidad de FiveM siempre activa, jugando todos juntos
+      y apoyándonos en cualquier servidor..</div>
+    <div class="box">Contamos con muchos voice donde puedes pasar el tiempo
+      en privado con tu coro sin presión..</div>
+    <div class="box">Tenemos personas encargadas de Citizen, Bloods, Tracer
+      y muchas cosas más relacionadas con FiveM..</div>
+    <div class="box">Unirte a 𝓑𝓑7 significa formar parte de una organización estructurada y activa dentro de FiveM.</div>
+    <div class="box">En 𝓑𝓑7 tendrás oportunidades reales de crecimiento dentro de una jerarquía organizada y respetada..</div>
+  </div>
+
+  <div class="community-buttons">
+    <button onclick="openModal('hdd')">𝓑𝓑7</button>
+    <button onclick="openModal('way')"></button>
+  </div>
+</section>
+
+<section id="reglas" class="reglas">
+  <h2>📜 REGLAS 𝓑𝓑7</h2>
+  <div class="reglas-box">
+    1. 𝖳𝗋𝖺𝗍𝖺𝗋 𝖺 𝗍𝗈𝖽𝗈𝗌 𝗅𝗈𝗌 𝗆𝗂𝖾𝗆𝖻𝗋𝗈𝗌 𝖼𝗈𝗇 𝗋𝖾𝗌𝗉𝖾𝗍𝗈. 𝖭𝖮 𝗌𝖾 𝗏𝖺 𝖺 𝗍𝗈𝗅𝖾𝗋𝖺𝗋 𝖾𝗅 𝖺𝖼𝗈𝗌𝗈, 𝗅𝖺 𝖽𝗂𝗌𝖼𝗋𝗂𝗆𝗂𝗇𝖺𝖼𝗂𝗈́𝗇, 𝗇𝗂 𝖾𝗅 𝖼𝗈𝗆𝗉𝗈𝗋𝗍𝖺𝗆𝗂𝖾𝗇𝗍𝗈 𝗈𝖿𝖾𝗇𝗌𝗂𝗏𝗈..<br>
+    2. 𝖬𝖺𝗇𝗍𝖾́𝗇 𝖾𝗅 𝖼𝗈𝗇𝗍𝖾𝗇𝗂𝖽𝗈 𝖽𝖾 𝖼𝗈𝗇𝗏𝖾𝗋𝗌𝖺𝖼𝗂𝗈𝗇𝖾𝗌 𝗒 𝗆𝖾𝖽𝗂𝗈𝗌 𝖽𝖾𝗇𝗍𝗋𝗈 𝖽𝖾 𝗅𝖺𝗌 𝗇𝗈𝗋𝗆𝖺𝗌 𝖽𝖾 𝗅𝖺 𝖼𝗈𝗆𝗎𝗇𝗂𝖽𝖺𝖽 𝗒 𝖾𝗏𝗂𝗍𝖺 𝖾𝗅 𝖼𝗈𝗇𝗍𝖾𝗇𝗂𝖽𝗈 𝖭𝖲𝖥𝖶 𝗈 𝗂𝗅𝖾𝗀𝖺𝗅..<br>
+    3. 𝖤𝗏𝗂𝗍𝖺 𝖾𝗇𝗏𝗂𝖺𝗋 𝗌𝗉𝖺𝗆, 𝖾𝗇𝗅𝖺𝖼𝖾𝗌 𝗂𝗋𝗋𝖾𝗅𝖾𝗏𝖺𝗇𝗍𝖾𝗌 𝗈 𝗉𝗋𝗈𝗆𝗈𝖼𝗂𝗈𝗇𝖾𝗌 𝖭𝖮 𝖺𝗎𝗍𝗈𝗋𝗂𝗓𝖺𝖽𝖺𝗌 𝗉𝗈𝗋 𝗎𝗇 𝗆𝗈𝖽𝖾𝗋𝖺𝖽𝗈𝗋.<br>
+    4. 𝖱𝖾𝗌𝗉𝖾𝗍𝖺𝗋 𝖺 los que tienen mas rango que tu  𝗒 𝗌𝖾𝗀𝗎𝗂𝗋 𝗌𝗎𝗌 𝗋𝖾𝗀𝗅𝖺𝗌 𝖾𝗇 𝗍𝗈𝖽𝗈 𝗆𝗈𝗆𝖾𝗇𝗍𝗈. 𝖫𝗈𝗌 𝗆𝗈𝖽𝖾𝗋𝖺𝖽𝗈𝗋𝖾𝗌 𝗌𝗈𝗇 𝗎𝗇𝖺 𝗉𝗂𝖾𝗓𝖺 𝗆𝗎𝗒 𝗂𝗆𝗉𝗈𝗋𝗍𝖺𝗇𝗍𝖾 𝗉𝖺𝗋𝖺 𝗆𝖺𝗇𝗍𝖾𝗇𝖾𝗋 𝖾𝗅 𝗈𝗋𝖽𝖾𝗇, 𝗋𝖾𝗌𝗉𝖾𝗍𝗈 𝗒 𝖾𝗅 𝖺𝗆𝖻𝗂𝖾𝗇𝗍𝖾 𝖺𝖽𝖾𝖼𝗎𝖺𝖽𝗈 𝖾𝗇 𝗇𝗎𝖾𝗌𝗍𝗋𝗈 𝖾𝗇𝗍𝗈𝗋𝗇𝗈..<br>
+    5. 𝖫𝗈 𝗆𝖺́𝗌 𝗂𝗆𝗉𝗈𝗋𝗍𝖺𝗇𝗍𝖾; ¡𝖽𝗂𝗌𝖿𝗋𝗎𝗍𝖺 𝗒 𝖽𝗂𝗏𝗂𝖾́𝗋𝗍𝖾𝗍𝖾 𝖼𝗈𝗇 𝗇𝗈𝗌𝗈𝗍𝗋𝗈𝗌!.
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">✖</span>
+    <h3 id="modalTitle"></h3>
+    <p id="modalText"></p>
+    <a id="modalLink" target="_blank">Ir al Discord</a>
+  </div>
+</div>
+
+<script>
+function openModal(type){
+  const modal = document.getElementById("modal");
+  const title = document.getElementById("modalTitle");
+  const text = document.getElementById("modalText");
+  const link = document.getElementById("modalLink");
+
+  if(type === "𝓑𝓑7"){
+    title.innerText = "Comunidad 𝓑𝓑7";
+    text.innerText = "la mejor comuniadad de todas.";
+    link.href = "https://discord.gg/yM5gcfdTpf";
+    link.innerText = "Discord 𝓑𝓑7";
+  }
+
+  if(type === "way"){
+    title.innerText = "Comunida no disponible";
+    text.innerText = " Comunida no disponible.";
+    link.href = "w";
+    link.innerText = "Comunida no disponible";
+  }
+
+  modal.style.display = "flex";
+}
+
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
+}
+
+
+ 
